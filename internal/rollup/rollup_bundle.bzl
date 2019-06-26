@@ -125,8 +125,8 @@ def write_rollup_config(ctx, plugins = [], root_dir = None, filename = "_%s.roll
     if not root_dir:
         # This must be .es6 to match collect_es6_sources.bzl
         root_dir = "/".join([ctx.bin_dir.path, build_file_dirname, ctx.label.name + ".es6"])
-    named_exports = {}
-    for (k, ne) in ctx.attr.named_exports:
+    named_exports = dict()
+    for k, ne in ctx.attr.named_exports.items():
         k = root_dir + "/" + k
         named_exports[k] = ne
 
@@ -145,7 +145,7 @@ def write_rollup_config(ctx, plugins = [], root_dir = None, filename = "_%s.roll
             "TMPL_inputs": ",".join(["\"%s\"" % e for e in entry_points]),
             "TMPL_is_default_node_modules": "true" if is_default_node_modules else "false",
             "TMPL_module_mappings": str(mappings),
-            "TMPL_named_exports": str(ctx.attr.named_exports),
+            "TMPL_named_exports": str(named_exports),
             "TMPL_node_modules_root": node_modules_root,
             "TMPL_output_format": output_format,
             "TMPL_rootDir": root_dir,

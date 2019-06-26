@@ -127,11 +127,11 @@ function resolveBazel(importee, importer, baseDir = process.cwd(), resolve = req
 
 let banner = '';
 if (bannerFile) {
-  banner = fs.readFileSync(bannerFile, {encoding: 'utf-8'});
+  banner = fs.readFileSync(bannerFile, { encoding: 'utf-8' });
   if (stampData) {
-    const versionTag = fs.readFileSync(stampData, {encoding: 'utf-8'})
-                           .split('\n')
-                           .find(s => s.startsWith('BUILD_SCM_VERSION'));
+    const versionTag = fs.readFileSync(stampData, { encoding: 'utf-8' })
+      .split('\n')
+      .find(s => s.startsWith('BUILD_SCM_VERSION'));
     // Don't assume BUILD_SCM_VERSION exists
     if (versionTag) {
       const version = versionTag.split(' ')[1].trim();
@@ -151,12 +151,12 @@ function notResolved(importee, importer) {
     // (which is an empty filegroup).
     // See https://github.com/bazelbuild/rules_nodejs/wiki#migrating-to-rules_nodejs-013
     throw new Error(
-        `Could not resolve import '${importee}' from '${importer}'` +
-        `\n\nWARNING: Due to a breaking change in rules_nodejs 0.13.2, target TMPL_target\n` +
-        `must now declare either an explicit node_modules attribute, or\n` +
-        `list explicit deps[] fine grained dependencies on npm labels\n` +
-        `if it has any node_modules dependencies.\n` +
-        `See https://github.com/bazelbuild/rules_nodejs/wiki#migrating-to-rules_nodejs-013\n`);
+      `Could not resolve import '${importee}' from '${importer}'` +
+      `\n\nWARNING: Due to a breaking change in rules_nodejs 0.13.2, target TMPL_target\n` +
+      `must now declare either an explicit node_modules attribute, or\n` +
+      `list explicit deps[] fine grained dependencies on npm labels\n` +
+      `if it has any node_modules dependencies.\n` +
+      `See https://github.com/bazelbuild/rules_nodejs/wiki#migrating-to-rules_nodejs-013\n`);
   } else {
     throw new Error(`Could not resolve import '${importee}' from '${importer}'`);
   }
@@ -181,7 +181,7 @@ const config = {
     nodeResolve({
       mainFields: ['es2015', 'module', 'jsnext:main', 'main'],
       jail: process.cwd(),
-      customResolveOptions: {moduleDirectory: nodeModulesRoot}
+      customResolveOptions: { moduleDirectory: nodeModulesRoot }
     }),
     amd({
       // Work-around for Angular ngfactory issue https://github.com/angular/angular/issues/29491.
@@ -189,7 +189,9 @@ const config = {
       // with the amd plugin.
       include: /\.ngfactory\.js$/i,
     }),
-    commonjs(),
+    commonjs({
+      namedExports: TMPL_named_exports,
+    }),
     {
       name: 'notResolved',
       resolveId: notResolved,

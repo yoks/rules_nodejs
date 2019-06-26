@@ -127,7 +127,7 @@ def write_rollup_config(ctx, plugins = [], root_dir = None, filename = "_%s.roll
         root_dir = "/".join([ctx.bin_dir.path, build_file_dirname, ctx.label.name + ".es6"])
     named_exports = dict()
     for k, ne in ctx.attr.named_exports.items():
-        if k[1] is "@":
+        if k[1] == "@":
             k = root_dir + "/" + k[1:]
         named_exports[k] = ne
 

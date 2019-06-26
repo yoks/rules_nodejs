@@ -125,6 +125,10 @@ def write_rollup_config(ctx, plugins = [], root_dir = None, filename = "_%s.roll
     if not root_dir:
         # This must be .es6 to match collect_es6_sources.bzl
         root_dir = "/".join([ctx.bin_dir.path, build_file_dirname, ctx.label.name + ".es6"])
+    named_exports = {}
+    for (k, ne) in ctx.attr.named_exports:
+        k = root_dir + "/" + k
+        named_exports[k] = ne
 
     node_modules_root = _compute_node_modules_root(ctx)
     is_default_node_modules = False

@@ -188,7 +188,6 @@ const config = {
       // Filter to only convert ngfactory files since any UMD files that may be bundled will break
       // with the amd plugin.
       include: /\.ngfactory\.js$/i,
-      include: /\.ngstyle\.js$/i,
     }),
     commonjs({
       namedExports: TMPL_named_exports,

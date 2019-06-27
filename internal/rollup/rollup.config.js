@@ -5,6 +5,7 @@ const nodeResolve = require('rollup-plugin-node-resolve');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 const amd = require('rollup-plugin-amd');
 const commonjs = require('rollup-plugin-commonjs');
+const builtin = require('rollup-plugin-node-builtins')
 const rollupJson = require('rollup-plugin-json');
 const isBuiltinModule = require('is-builtin-module');
 const path = require('path');
@@ -183,6 +184,7 @@ const config = {
       jail: process.cwd(),
       customResolveOptions: { moduleDirectory: nodeModulesRoot }
     }),
+    builtin(),
     amd({
       // Work-around for Angular ngfactory issue https://github.com/angular/angular/issues/29491.
       // Filter to only convert ngfactory files since any UMD files that may be bundled will break
